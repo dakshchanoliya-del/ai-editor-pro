@@ -3,260 +3,289 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#10111b">
-<title>AI Editor Pro</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b0d18">
+<title>AI Editor Pro 2.0</title>
 <style>
-:root{--bg:#10111b;--panel:#1a1d2b;--line:#34384e;--accent:#8957f5;--txt:#f6f5ff;--muted:#a9aec5}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--txt);font:15px Arial,sans-serif}
-button,input,select,textarea{font:inherit}
-button{border:1px solid var(--line);border-radius:10px;background:#292d41;color:white;padding:11px;cursor:pointer}
-button.primary,.active{background:var(--accent);border-color:var(--accent)}
-button:disabled{opacity:.5}
-header{padding:16px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px;background:#181a28;border-bottom:1px solid var(--line)}
-.logo{font-size:21px;font-weight:800}.logo span{color:#b49aff}
-nav{display:flex;gap:8px;overflow:auto;padding:12px;background:#141624;border-bottom:1px solid var(--line)}
-nav button{white-space:nowrap}
-.layout{max-width:1600px;margin:auto;padding:12px;display:grid;grid-template-columns:205px minmax(300px,1fr) 265px;gap:12px}
-.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;min-width:0}
-h2{font-size:16px;margin:0 0 14px}h3{font-size:13px;color:#c8baff;margin:18px 0 9px}
-.hint{color:var(--muted);font-size:12px;line-height:1.6}
-.field{margin:13px 0}.field label{display:flex;justify-content:space-between;font-size:13px;margin-bottom:7px}
-input[type=range]{width:100%;accent-color:#a78bfa}
-input[type=file],input[type=text],select,textarea{width:100%;background:#10121d;color:white;border:1px solid var(--line);border-radius:9px;padding:10px}
-input[type=color]{width:100%;height:38px}
-textarea{min-height:70px}
-.tools{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.workspace{display:flex;flex-direction:column;gap:10px;min-height:450px}
-.bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.bar .grow{flex:1}
-.stage{flex:1;min-height:320px;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px dashed #484c64;border-radius:12px;padding:8px;background-color:#0c0d15;background-image:linear-gradient(45deg,#1a1c29 25%,transparent 25%),linear-gradient(-45deg,#1a1c29 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#1a1c29 75%),linear-gradient(-45deg,transparent 75%,#1a1c29 75%);background-size:24px 24px;background-position:0 0,0 12px,12px -12px,-12px 0}
-canvas{max-width:100%;max-height:65vh;object-fit:contain}
-video{max-width:100%;max-height:65vh}
-.status{font-size:12px;background:#111321;border:1px solid var(--line);border-radius:9px;padding:10px;overflow-wrap:anywhere}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-hr{border:0;border-top:1px solid var(--line);margin:16px 0}
-footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
-[hidden]{display:none!important}
-@media(max-width:900px){.layout{grid-template-columns:165px minmax(0,1fr)}.right{grid-column:1/-1}}
-@media(max-width:560px){header{padding:12px}.logo{font-size:17px}.layout{grid-template-columns:1fr;padding:8px}.workspace{order:0;min-height:350px}.left{order:1}.right{order:2;grid-column:auto}.stage{min-height:270px}}
+body{margin:0;background:#0b0d18;color:#f7f7ff;font:15px Arial,sans-serif}
+header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:16px;background:#151a2d;border-bottom:1px solid #303754}
+.logo{font-size:21px;font-weight:bold}.logo span{color:#9b7aff}
+button{background:#252b45;color:white;border:1px solid #414968;border-radius:9px;padding:10px;cursor:pointer}
+button:hover{border-color:#9b7aff}.primary{background:#7654ff;border:0}
+.layout{display:grid;grid-template-columns:220px minmax(0,1fr) 240px;gap:12px;padding:12px}
+.panel,.editor{background:#151a2d;border:1px solid #303754;border-radius:12px;padding:14px;min-width:0}
+h3{font-size:15px;margin:5px 0 14px}h4{font-size:12px;color:#b8c2dc}
+label{display:block;font-size:13px;margin:14px 0}
+input[type=file]{width:100%;margin-top:8px;font-size:12px}
+input[type=range]{width:100%;accent-color:#9b7aff}
+input[type=text],textarea{width:100%;background:#090e1e;color:white;border:1px solid #414968;border-radius:8px;padding:10px;margin:7px 0}
+textarea{min-height:85px;resize:vertical}
+.stage{min-height:340px;background:#080a12;border-radius:10px;display:flex;align-items:center;justify-content:center;padding:12px;overflow:hidden}
+canvas{display:none;max-width:100%;max-height:60vh;object-fit:contain}
+video{display:none;max-width:100%;max-height:60vh}
+#empty{text-align:center;color:#a4aec7;line-height:1.8}
+.row{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}
+.keywords{display:flex;flex-wrap:wrap;gap:6px}
+.keywords button{font-size:11px;padding:7px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.template{min-height:65px;font-weight:bold}
+.warm{background:linear-gradient(135deg,#ffce83,#e86d70,#642d68)}
+.cool{background:linear-gradient(135deg,#68e4ed,#387bdc,#17264b)}
+.cinema{background:linear-gradient(135deg,#f3b16c,#8b54b5,#14294e)}
+.mono{background:linear-gradient(135deg,#eee,#747889,#222)}
+.status{color:#b8c2dc;font-size:12px;line-height:1.6}
+hr{border:0;border-top:1px solid #303754;margin:18px 0}
+@media(max-width:850px){.layout{grid-template-columns:1fr 1fr}.editor{grid-column:1/-1;grid-row:1}.panel{min-width:0}}
+@media(max-width:520px){header{padding:12px}.logo{font-size:17px}.layout{display:flex;flex-direction:column;padding:7px}.editor{order:0}.panel{order:1}.stage{min-height:280px}canvas,video{max-height:45vh}}
 </style>
 </head>
 <body>
 <header>
- <div><div class="logo">✨ AI <span>Editor Pro</span></div><small class="hint">Photo • Video • Creative Studio</small></div>
- <button onclick="document.documentElement.requestFullscreen?.()">⛶ Full Screen</button>
+  <div class="logo">✦ AI Editor <span>Pro 2.0</span></div>
+  <button class="primary" onclick="downloadPhoto()">Export ↓</button>
 </header>
-<nav>
- <button class="active" data-mode="photo">📸 Photo Editor</button>
- <button data-mode="video">🎬 Video Editor</button>
- <button data-mode="ai">🤖 AI Studio</button>
-</nav>
+
 <div class="layout">
- <aside class="panel left">
-  <h2>📂 Import Media</h2>
-  <div class="field"><label>Choose Photo</label><input id="photoFile" type="file" accept="image/*"></div>
-  <div class="field"><label>Choose Video</label><input id="videoFile" type="file" accept="video/*"></div>
-  <hr>
-  <h2>🧰 Quick Tools</h2>
-  <div class="tools">
-   <button onclick="rotate()">↻ Rotate</button>
-   <button onclick="resetPhoto()">⟲ Reset</button>
-   <button onclick="undo()">↶ Undo</button>
-   <button onclick="redo()">↷ Redo</button>
-  </div>
-  <h3>✂️ Crop Ratio</h3>
-  <select id="ratio">
-   <option value="free">Free / Original</option><option value="1">1:1 Square</option>
-   <option value="0.8">4:5 Portrait</option><option value="1.7778">16:9 Landscape</option>
-   <option value="0.5625">9:16 Story / Reel</option>
-  </select>
-  <button style="width:100%;margin-top:8px" onclick="crop()">✂️ Crop Center</button>
-  <p class="hint">Crop trims the center of the photo to your chosen ratio.</p>
- </aside>
+<aside class="panel">
+<h3>📁 Media Library</h3>
+<label>Upload Photo
+<input id="photoFile" type="file" accept="image/*">
+</label>
+<label>Upload Video
+<input id="videoFile" type="file" accept="video/*">
+</label>
 
- <main class="panel workspace">
-  <div class="bar"><strong id="workspaceTitle">Photo Workspace</strong><span class="grow"></span><button class="primary" onclick="downloadPhoto()">⬇ Download Photo</button></div>
-  <div class="stage"><canvas id="canvas" width="900" height="600"></canvas><video id="video" controls playsinline hidden></video></div>
-  <div class="bar">
-   <button onclick="photoFile.click()">＋ Add Photo</button><button onclick="videoFile.click()">＋ Add Video</button>
-   <button onclick="exportVideo()">⬇ Export Video</button>
-  </div>
-  <div id="status" class="status">Welcome! Choose a photo or video to begin.</div>
- </main>
-
- <aside class="panel right">
-  <section id="photoPanel">
-   <h2>🎨 Photo Adjustments</h2>
-   <div class="field"><label>Brightness <span id="bv">100%</span></label><input id="brightness" type="range" min="0" max="200" value="100"></div>
-   <div class="field"><label>Contrast <span id="cv">100%</span></label><input id="contrast" type="range" min="0" max="200" value="100"></div>
-   <div class="field"><label>Saturation <span id="sv">100%</span></label><input id="saturation" type="range" min="0" max="200" value="100"></div>
-   <div class="field"><label>Sharpness <span id="shv">0</span></label><input id="sharpness" type="range" min="0" max="5" step=".5" value="0"></div>
-   <h3>✨ Filters</h3>
-   <select id="filter">
-    <option value="none">Original</option><option value="cinema">Cinematic</option>
-    <option value="vivid">Vivid HDR Style</option><option value="vintage">Vintage</option>
-    <option value="bw">Black & White</option><option value="warm">Warm</option>
-    <option value="cool">Cool</option><option value="dream">Dream</option>
-   </select>
-   <h3>🔤 Text & Name</h3>
-   <input id="textInput" type="text" placeholder="Write text for your photo">
-   <div class="grid2" style="margin-top:8px"><input id="textColor" type="color" value="#ffffff" aria-label="Text colour"><select id="textSize"><option value="24">Small Text</option><option value="40" selected>Medium Text</option><option value="60">Large Text</option><option value="85">XL Text</option></select></div>
-   <button class="primary" style="width:100%;margin-top:8px" onclick="addText()">＋ Add Text</button>
-   <h3>😎 Stickers</h3>
-   <div class="grid2"><button onclick="sticker('🔥')">🔥 Fire</button><button onclick="sticker('❤️')">❤️ Love</button><button onclick="sticker('⭐')">⭐ Star</button><button onclick="sticker('😎')">😎 Cool</button></div>
-   <h3>🖼️ Templates</h3>
-   <div class="grid2"><button onclick="template('1','SOCIAL POST')">Social Post</button><button onclick="template('1.7778','NEW VIDEO')">Thumbnail</button><button onclick="template('.5625','MY STORY')">Story / Reel</button><button onclick="template('.8','SPECIAL EDITION')">Poster</button></div>
-  </section>
-
-  <section id="videoPanel" hidden>
-   <h2>🎬 Video Studio</h2>
-   <p class="hint">Select a video to preview it and change playback speed or filters. Export records the filtered preview as WebM if supported.</p>
-   <div class="field"><label>Video Filter</label><select id="videoFilter"><option value="none">Original</option><option value="cinema">Cinematic</option><option value="bw">Black & White</option><option value="vivid">Vivid</option><option value="warm">Warm</option></select></div>
-   <div class="field"><label>Playback Speed</label><select id="speed"><option value=".5">0.5× Slow</option><option value="1" selected>1× Normal</option><option value="1.5">1.5× Fast</option><option value="2">2× Fast</option></select></div>
-   <button class="primary" style="width:100%" onclick="exportVideo()">⬇ Export Video</button>
-   <p class="hint">WebM export support varies by browser. Original video audio may not be included.</p>
-  </section>
-
-  <section id="aiPanel" hidden>
-   <h2>🤖 AI Studio</h2>
-   <h3>✂️ Background Remover</h3>
-   <p class="hint">This uses an online AI model. The first run may download a large model and require a good connection.</p>
-   <button class="primary" style="width:100%" onclick="removeBackground()">Remove Background</button>
-   <hr><h3>✨ AI Prompt Builder</h3>
-   <textarea id="prompt" placeholder="Describe your desired photo edit..."></textarea>
-   <button style="width:100%;margin-top:8px" onclick="improvePrompt()">Improve Prompt</button>
-   <div id="promptResult" class="status" style="margin-top:8px">Your prompt will appear here.</div>
-   <hr><h3>🔍 Quick Enhancement</h3>
-   <button style="width:100%" onclick="enhance()">Enhance Photo</button>
-   <p class="hint">Quick enhancement is a normal photo adjustment, not AI upscaling.</p>
-  </section>
- </aside>
+<hr><h3>⚡ Quick Tools</h3>
+<div class="row">
+<button onclick="rotatePhoto()">↻ Rotate</button>
+<button onclick="resetEdits()">Reset</button>
+<button onclick="undoPhoto()">↶ Undo</button>
 </div>
-<footer>AI Editor Pro · Browser-based creative tools</footer>
+
+<hr><h3>✨ Templates & Filters</h3>
+<div class="grid">
+<button class="template cinema" onclick="setFilter('cinema')">Cinematic</button>
+<button class="template cool" onclick="setFilter('cool')">Travel</button>
+<button class="template warm" onclick="setFilter('warm')">Warm</button>
+<button class="template mono" onclick="setFilter('mono')">B&W</button>
+<button onclick="setFilter('none')">Original</button>
+</div>
+
+<hr><h3>📝 Add Text</h3>
+<input id="photoText" type="text" placeholder="Write text for photo">
+<button class="primary" onclick="addPhotoText()">Add Text</button>
+<p class="status">Photo editing happens in your browser.</p>
+</aside>
+
+<main class="editor">
+<h3>🎨 Your Editing Workspace</h3>
+<div class="stage">
+<div id="empty">✦<h3>Welcome to AI Editor Pro 2.0</h3>Upload a photo or video to start editing.</div>
+<canvas id="canvas"></canvas>
+<video id="video" controls playsinline></video>
+</div>
+
+<h3>Adjust Your Photo</h3>
+<label>Brightness: <span id="bv">100%</span>
+<input id="brightness" type="range" min="0" max="200" value="100">
+</label>
+<label>Contrast: <span id="cv">100%</span>
+<input id="contrast" type="range" min="0" max="200" value="100">
+</label>
+<label>Saturation: <span id="sv">100%</span>
+<input id="saturation" type="range" min="0" max="200" value="100">
+</label>
+<div class="row">
+<button class="primary" onclick="downloadPhoto()">⬇ Download Photo</button>
+<button onclick="resetEdits()">Reset Edits</button>
+</div>
+<p id="status" class="status">Ready — upload your media.</p>
+</main>
+
+<aside class="panel">
+<h3>✦ AI Prompt Studio</h3>
+<textarea id="prompt" placeholder="Describe your image idea..."></textarea>
+<h4>KEYWORDS — TAP TO ADD</h4>
+<div class="keywords" id="keywords"></div>
+<div class="row">
+<button class="primary" onclick="copyPrompt()">Copy Prompt</button>
+<button onclick="document.getElementById('prompt').value=''">Clear</button>
+</div>
+<p class="status">Build prompts using keywords such as 4K, cinematic and sunset. Real AI generation needs an AI service/API.</p>
+
+<hr><h3>◈ Background Remover</h3>
+<p class="status">Automatic AI background removal needs an online AI model or API.</p>
+<button onclick="alert('Background removal is not connected yet. An AI background-removal service/API is required.')">Background AI Info</button>
+
+<hr><h3>✨ Enhance</h3>
+<button class="primary" onclick="enhancePhoto()">Quick Enhance</button>
+<p class="status">Improves contrast and saturation. Full AI enhancement requires an AI service.</p>
+</aside>
+</div>
 
 <script>
-const $=id=>document.getElementById(id);
-const canvas=$('canvas'),ctx=canvas.getContext('2d'),video=$('video');
-let img=new Image(),loaded=false,angle=0,items=[],undoStack=[],redoStack=[],currentFile=null,videoUrl=null;
-let baseWidth=900,baseHeight=600;
+const canvas=document.getElementById('canvas');
+const ctx=canvas.getContext('2d');
+const empty=document.getElementById('empty');
+const video=document.getElementById('video');
+let img=new Image(),loaded=false,angle=0,filter='none',overlay='';
+let brightness=100,contrast=100,saturation=100,history=[];
 
-function say(s){$('status').textContent=s}
-function remember(){
- if(!loaded)return;
- try{undoStack.push(JSON.stringify({data:canvas.toDataURL('image/png'),angle,items}));if(undoStack.length>15)undoStack.shift();redoStack=[]}catch(e){}
+const keywordList=[
+'4K','HD','Cinematic','Ultra Detailed','Portrait','Landscape',
+'Sunset','Neon','Gaming Thumbnail','YouTube Thumbnail',
+'Instagram Reel','Professional Lighting','Sharp Focus',
+'Luxury','Anime','Travel','Product Photography','Background Blur'
+];
+
+keywordList.forEach(word=>{
+ const button=document.createElement('button');
+ button.textContent=word;
+ button.onclick=()=>{
+  const p=document.getElementById('prompt');
+  p.value+=(p.value.trim()?', ':'')+word;
+ };
+ document.getElementById('keywords').appendChild(button);
+});
+
+function message(text){
+ document.getElementById('status').textContent=text;
 }
-function draw(){
+function saveHistory(){
  if(!loaded)return;
- const w=img.naturalWidth||img.width,h=img.naturalHeight||img.height;
- const scale=Math.min(1800/w,1800/h,1),sw=Math.max(1,Math.round(w*scale)),sh=Math.max(1,Math.round(h*scale));
- canvas.width=angle%180===0?sw:sh;canvas.height=angle%180===0?sh:sw;
- const f=$('filter').value;
- let extra='';
- if(f==='cinema')extra='contrast(1.15) saturate(1.18)';
- if(f==='vivid')extra='contrast(1.12) saturate(1.5)';
- if(f==='vintage')extra='sepia(.55) contrast(.92)';
- if(f==='bw')extra='grayscale(1)';
- if(f==='warm')extra='sepia(.2) saturate(1.15)';
- if(f==='cool')extra='hue-rotate(12deg) saturate(1.1)';
- if(f==='dream')extra='brightness(1.08) saturate(.85)';
- ctx.clearRect(0,0,canvas.width,canvas.height);
- ctx.save();ctx.translate(canvas.width/2,canvas.height/2);ctx.rotate(angle*Math.PI/180);
- ctx.filter=`brightness(${$('brightness').value}%) contrast(${$('contrast').value}%) saturate(${$('saturation').value}%) ${extra}`;
- ctx.drawImage(img,-sw/2,-sh/2,sw,sh);ctx.restore();ctx.filter='none';
- items.forEach(o=>{ctx.save();ctx.textAlign='center';ctx.textBaseline='middle';ctx.font=`bold ${o.size}px Arial`;ctx.shadowColor='#000';ctx.shadowBlur=5;ctx.fillStyle=o.color;ctx.fillText(o.text,canvas.width*o.x,canvas.height*o.y);ctx.restore()});
+ try{
+  history.push(canvas.toDataURL('image/png'));
+  if(history.length>10)history.shift();
+ }catch(e){}
 }
-$('photoFile').addEventListener('change',e=>{
+function cssFilter(){
+ let b=brightness,c=contrast,s=saturation;
+ if(filter==='warm'){b+=5;s+=20}
+ if(filter==='cool'){c+=8;s+=5}
+ if(filter==='mono')s=0;
+ if(filter==='cinema'){c+=18;s=Math.max(0,s-12)}
+ return `brightness(${b}%) contrast(${c}%) saturate(${s}%)`;
+}
+function renderPhoto(){
+ if(!loaded)return;
+ const swap=Math.abs(angle)%180===90;
+ canvas.width=swap?img.height:img.width;
+ canvas.height=swap?img.width:img.height;
+ ctx.save();
+ ctx.translate(canvas.width/2,canvas.height/2);
+ ctx.rotate(angle*Math.PI/180);
+ ctx.filter=cssFilter();
+ ctx.drawImage(img,-img.width/2,-img.height/2);
+ ctx.filter='none';
+ ctx.restore();
+ if(overlay){
+  ctx.save();
+  ctx.font='bold '+Math.max(22,canvas.width/18)+'px Arial';
+  ctx.textAlign='center';
+  ctx.lineWidth=Math.max(3,canvas.width/300);
+  ctx.strokeStyle='#000';
+  ctx.fillStyle='#fff';
+  ctx.strokeText(overlay,canvas.width/2,canvas.height*.88);
+  ctx.fillText(overlay,canvas.width/2,canvas.height*.88);
+  ctx.restore();
+ }
+ canvas.style.display='block';
+ empty.style.display='none';
+ video.style.display='none';
+}
+document.getElementById('photoFile').addEventListener('change',e=>{
  const file=e.target.files[0];if(!file)return;
- if(!file.type.startsWith('image/'))return say('Choose a valid image file.');
- const url=URL.createObjectURL(file),next=new Image();
- next.onload=()=>{img=next;loaded=true;currentFile=file;angle=0;items=[];undoStack=[];redoStack=[];['brightness','contrast','saturation'].forEach(k=>$(k).value=100);$('sharpness').value=0;$('filter').value='none';draw();remember();say('Photo loaded. Start editing!');URL.revokeObjectURL(url)};
- next.onerror=()=>{say('Image could not be opened. Try JPG or PNG.');URL.revokeObjectURL(url)};
- next.src=url;
+ const url=URL.createObjectURL(file);
+ img.onload=()=>{
+  loaded=true;angle=0;filter='none';overlay='';
+  brightness=contrast=saturation=100;updateLabels();
+  video.pause();video.removeAttribute('src');
+  history=[];renderPhoto();saveHistory();
+  message('Photo loaded: '+file.name);
+  URL.revokeObjectURL(url);
+ };
+ img.onerror=()=>{message('Could not open this image. Try JPG or PNG.');URL.revokeObjectURL(url)};
+ img.src=url;
 });
-['brightness','contrast','saturation','sharpness','filter'].forEach(id=>$(id).addEventListener('input',()=>{
- $('bv').textContent=$('brightness').value+'%';$('cv').textContent=$('contrast').value+'%';$('sv').textContent=$('saturation').value+'%';$('shv').textContent=$('sharpness').value;draw();
-}));
-function rotate(){if(!loaded)return say('Upload a photo first.');remember();angle=(angle+90)%360;draw();say('Photo rotated.')}
-function resetPhoto(){if(!loaded)return say('Upload a photo first.');remember();angle=0;items=[];['brightness','contrast','saturation'].forEach(k=>$(k).value=100);$('sharpness').value=0;$('filter').value='none';draw();say('Photo adjustments reset.')}
-function restore(s){const o=JSON.parse(s),im=new Image();angle=o.angle;items=o.items||[];im.onload=()=>{canvas.width=im.width;canvas.height=im.height;ctx.drawImage(im,0,0)};im.src=o.data}
-function undo(){if(undoStack.length<2)return say('Nothing to undo.');redoStack.push(undoStack.pop());restore(undoStack[undoStack.length-1]);say('Undo complete.')}
-function redo(){if(!redoStack.length)return say('Nothing to redo.');const s=redoStack.pop();undoStack.push(s);restore(s);say('Redo complete.')}
-function addOverlay(text,color,size){if(!loaded)return say('Upload a photo first.');remember();items.push({text,color,size,x:.5,y:.5});draw();say('Added to the centre of your photo.')}
-function addText(){const t=$('textInput').value.trim();if(!t)return say('Enter text first.');addOverlay(t,$('textColor').value,+$('textSize').value);$('textInput').value=''}
-function sticker(t){addOverlay(t,'#ffffff',64)}
-function crop(){
- if(!loaded)return say('Upload a photo first.');
- const r=$('ratio').value;if(r==='free')return say('Choose a crop ratio first.');
- remember();const target=+r;let w=canvas.width,h=canvas.height;
- if(w/h>target)w=Math.round(h*target);else h=Math.round(w/target);
- const x=Math.floor((canvas.width-w)/2),y=Math.floor((canvas.height-h)/2),tmp=document.createElement('canvas');
- tmp.width=w;tmp.height=h;tmp.getContext('2d').drawImage(canvas,x,y,w,h,0,0,w,h);
- const next=new Image();next.onload=()=>{img=next;angle=0;items=[];draw();say('Crop applied.')};next.src=tmp.toDataURL('image/png');
+document.getElementById('videoFile').addEventListener('change',e=>{
+ const file=e.target.files[0];if(!file)return;
+ video.src=URL.createObjectURL(file);
+ video.style.display='block';canvas.style.display='none';empty.style.display='none';
+ video.load();message('Video preview loaded: '+file.name+'. Video export is not enabled.');
+});
+function updateLabels(){
+ document.getElementById('bv').textContent=brightness+'%';
+ document.getElementById('cv').textContent=contrast+'%';
+ document.getElementById('sv').textContent=saturation+'%';
 }
-function template(r,t){if(!loaded)return say('Upload a photo first.');$('ratio').value=r;addOverlay(t,'#ffffff',Math.max(24,Math.round(canvas.width*.055)));say('Template text added. Use Crop Center to crop to the chosen ratio.')}
+['brightness','contrast','saturation'].forEach(id=>{
+ document.getElementById(id).addEventListener('input',e=>{
+  if(!loaded)return;
+  saveHistory();
+  if(id==='brightness')brightness=+e.target.value;
+  if(id==='contrast')contrast=+e.target.value;
+  if(id==='saturation')saturation=+e.target.value;
+  updateLabels();renderPhoto();
+ });
+});
+function setFilter(name){
+ if(!loaded)return alert('Upload a photo first.');
+ saveHistory();filter=name;renderPhoto();message('Filter applied: '+name);
+}
+function rotatePhoto(){
+ if(!loaded)return alert('Upload a photo first.');
+ saveHistory();angle=(angle+90)%360;renderPhoto();
+}
+function addPhotoText(){
+ if(!loaded)return alert('Upload a photo first.');
+ saveHistory();overlay=document.getElementById('photoText').value.trim();
+ renderPhoto();
+}
+function resetEdits(){
+ if(!loaded)return alert('Upload a photo first.');
+ saveHistory();angle=0;filter='none';overlay='';
+ brightness=contrast=saturation=100;
+ ['brightness','contrast','saturation'].forEach(id=>document.getElementById(id).value=100);
+ document.getElementById('photoText').value='';
+ updateLabels();renderPhoto();message('Adjustments reset.');
+}
+function undoPhoto(){
+ if(history.length<2)return alert('No previous edit to undo.');
+ history.pop();
+ const old=new Image();
+ old.onload=()=>{
+  canvas.width=old.width;canvas.height=old.height;
+  ctx.drawImage(old,0,0);canvas.style.display='block';empty.style.display='none';
+ };
+ old.src=history[history.length-1];
+}
+function enhancePhoto(){
+ if(!loaded)return alert('Upload a photo first.');
+ saveHistory();
+ brightness=Math.min(200,brightness+5);
+ contrast=Math.min(200,contrast+15);
+ saturation=Math.min(200,saturation+10);
+ document.getElementById('brightness').value=brightness;
+ document.getElementById('contrast').value=contrast;
+ document.getElementById('saturation').value=saturation;
+ updateLabels();renderPhoto();message('Quick Enhance applied.');
+}
 function downloadPhoto(){
- if(!loaded)return say('Upload a photo first.');
- canvas.toBlob(b=>{if(!b)return say('Image export failed.');const u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download='ai-editor-pro.png';a.click();setTimeout(()=>URL.revokeObjectURL(u),2000);say('Photo download started.')},'image/png');
+ if(!loaded)return alert('Upload a photo before exporting.');
+ const link=document.createElement('a');
+ link.download='ai-editor-pro-2.png';
+ link.href=canvas.toDataURL('image/png');
+ link.click();
 }
-function enhance(){if(!loaded)return say('Upload a photo first.');remember();$('brightness').value=105;$('contrast').value=115;$('saturation').value=115;$('sharpness').value=1;$('filter').value='vivid';draw();say('Quick enhancement applied. This is not AI upscaling.')}
-function improvePrompt(){
- const p=$('prompt').value.trim();if(!p)return $('promptResult').textContent='Please describe your image first.';
- $('promptResult').textContent='Professional image-edit prompt: '+p+'. Preserve the subject and identity, use realistic details, natural textures, balanced lighting, clean composition and professional colour grading. Avoid distortion, blur and artificial-looking skin.';
-}
-$('videoFile').addEventListener('change',e=>{
- const f=e.target.files[0];if(!f)return;
- if(!f.type.startsWith('video/'))return say('Choose a valid video file.');
- if(videoUrl)URL.revokeObjectURL(videoUrl);
- videoUrl=URL.createObjectURL(f);video.src=videoUrl;video.hidden=false;canvas.hidden=true;
- $('workspaceTitle').textContent='Video Workspace';$('videoPanel').hidden=false;$('photoPanel').hidden=true;$('aiPanel').hidden=true;
- say('Video loaded. Press play to preview. Export support depends on your browser.');
-});
-$('speed').addEventListener('change',()=>video.playbackRate=+$('speed').value);
-$('videoFilter').addEventListener('change',()=>{video.style.filter=videoFilterCSS()});
-function videoFilterCSS(){
- const f=$('videoFilter').value;
- return f==='bw'?'grayscale(1)':f==='cinema'?'contrast(1.15) saturate(1.2)':f==='vivid'?'contrast(1.1) saturate(1.5)':f==='warm'?'sepia(.2)':'none';
-}
-async function exportVideo(){
- if(!video.src||video.hidden)return say('Upload a video first.');
- if(!video.captureStream&&!video.mozCaptureStream)return say('This browser does not support video export.');
- if(!window.MediaRecorder)return say('Video recording is not supported in this browser.');
- try{
-  video.pause();video.currentTime=0;
-  await new Promise((resolve,reject)=>{video.onseeked=resolve;video.onerror=reject;setTimeout(resolve,1500)});
-  const stream=(video.captureStream||video.mozCaptureStream).call(video);
-  const mime=MediaRecorder.isTypeSupported('video/webm;codecs=vp9')?'video/webm;codecs=vp9':'video/webm';
-  const recorder=new MediaRecorder(stream,{mimeType:mime}),chunks=[];
-  recorder.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};
-  recorder.onstop=()=>{const blob=new Blob(chunks,{type:'video/webm'}),u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download='ai-editor-video.webm';a.click();setTimeout(()=>URL.revokeObjectURL(u),5000);say('Video export finished. Check your Downloads folder.')};
-  recorder.start();video.play();say('Recording video preview. Keep the page open until the video ends.');
-  video.onended=()=>{if(recorder.state!=='inactive')recorder.stop();video.pause()};
- }catch(e){say('Video export failed. Your browser may not support this feature.')}
-}
-document.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>{
- document.querySelectorAll('[data-mode]').forEach(x=>x.classList.toggle('active',x===b));
- const m=b.dataset.mode;
- $('photoPanel').hidden=m!=='photo';$('videoPanel').hidden=m!=='video';$('aiPanel').hidden=m!=='ai';
- $('workspaceTitle').textContent=m==='photo'?'Photo Workspace':m==='video'?'Video Workspace':'AI Studio';
- if(m==='photo'){canvas.hidden=false;video.hidden=true}
- if(m==='video'&&video.src){canvas.hidden=true;video.hidden=false}
- if(m==='ai'){canvas.hidden=false;video.hidden=true}
-}));
-async function removeBackground(){
- if(!loaded)return say('Upload a photo first.');
- say('Loading background-removal AI model. Keep this page open; first download may be large.');
- try{
-  const mod=await import('https://esm.sh/@imgly/background-removal@1.5.5');
-  const blob=await (await fetch(canvas.toDataURL('image/png'))).blob();
-  const result=await mod.removeBackground(blob);
-  const url=URL.createObjectURL(result),next=new Image();
-  next.onload=()=>{remember();img=next;items=[];angle=0;draw();URL.revokeObjectURL(url);say('Background removed! Download the transparent PNG.')};
-  next.onerror=()=>{URL.revokeObjectURL(url);say('Could not load the result image.')};next.src=url;
- }catch(e){say('Background removal failed. Check your internet, then try again. This AI model may not work on every browser.')}
+function copyPrompt(){
+ const p=document.getElementById('prompt');
+ if(!p.value.trim())return alert('Write a prompt or tap a keyword first.');
+ if(navigator.clipboard&&navigator.clipboard.writeText){
+  navigator.clipboard.writeText(p.value).then(()=>alert('Prompt copied!')).catch(()=>prompt('Copy your prompt:',p.value));
+ }else prompt('Copy your prompt:',p.value);
 }
 </script>
 </body>
-                                                                    </html>
-  
+ </html>
+ 
